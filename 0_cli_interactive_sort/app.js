@@ -36,6 +36,7 @@ const getUniqueValues = (arr) => {
 // our response
 let inputArray = [];
 
+//  It asks the user how they want to sort the input, and then performs the sort based on the user's input.
 const sort = (input) => {
   rl.question(
     "How would you like to sort the input?\n" +
@@ -52,12 +53,13 @@ const sort = (input) => {
           console.log(sortWords(input));
           break;
         case "2":
-          console.log(sortNumbersAsc(input));
+          console.log(sortNumbersAsc(input.filter((x) => !isNaN(x))));
+          break;
         case "3":
-          console.log(sortNumbersDesc(input));
+          console.log(sortNumbersDesc(input.filter((x) => !isNaN(x))));
           break;
         case "4":
-          console.log(sortWordsByLength(input));
+          console.log(sortWordsByLength(input.filter((x) => isNaN(x))));
           break;
         case "5":
           console.log(getUniqueWords(input));
@@ -71,11 +73,14 @@ const sort = (input) => {
         default:
           console.log("Invalid option");
       }
+      if (answer !== "exit") {
+        sort(inputArray);
+      }
     }
   );
 };
 
-rl.question("enter a few words...", (answer) => {
+rl.question("Enter a few words or numbers separated by a space:", (answer) => {
   inputArray = answer.split(" ");
   sort(inputArray);
 });
