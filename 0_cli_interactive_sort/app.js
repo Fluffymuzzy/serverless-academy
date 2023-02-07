@@ -80,7 +80,35 @@ const sort = (input) => {
   );
 };
 
-rl.question("Enter a few words or numbers separated by a space:", (answer) => {
-  inputArray = answer.split(" ");
-  sort(inputArray);
-});
+// validation of incoming data
+const isValidInput = (inputArr) => {
+  return inputArr.length >= 2 && inputArr.length <= 10;
+};
+
+// ask the user for input, checks if the input is valid, and if it is, sorts the
+// values. If the input is not valid, it asks the user if they want to try again.
+
+const letsStartAgain = () =>
+  rl.question(
+    "Enter a few words or numbers separated by a space:",
+    (answer) => {
+      inputArray = answer.split(" ");
+      if (isValidInput(inputArray)) {
+        sort(inputArray);
+      } else {
+        console.log(
+          "Error: Please enter between 2 and 10 values separated by a space"
+        );
+        console.log("Do you want to try again? (yes/no)");
+        rl.question("", (answer) => {
+          if (answer === "yes") {
+            letsStartAgain();
+          } else {
+            rl.close();
+          }
+        });
+      }
+    }
+  );
+
+letsStartAgain();
