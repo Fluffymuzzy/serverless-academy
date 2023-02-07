@@ -1,0 +1,11 @@
+{
+  "name": "0_cli_interactive_sort",
+  "version": "1.0.0",
+  "description": "A CLI that can sort numbers or words",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
