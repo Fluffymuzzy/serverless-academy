@@ -23,6 +23,7 @@ const addUser = () => {
         name: "age",
         message: "Enter age:",
         when: ({ name }) => name,
+        validate: (age) => !isNaN(age),
       },
     ])
     // Push (P) data from the user's input into the database.
@@ -31,11 +32,9 @@ const addUser = () => {
         db.push({ name: name, gender: gender, age: age });
         addUser();
       } else {
-        // Put data into database.
         fs.writeFileSync("./db.txt", JSON.stringify(db));
         console.log("All users:");
         console.log(db);
-        // Ask the user if they want to search for a users in db.
         inquirer
           .prompt([
             {
@@ -49,6 +48,7 @@ const addUser = () => {
               searchUserByName();
             } else {
               console.log("Bye...");
+              fs.unlinkSync("./db.txt");
             }
           });
       }
@@ -82,6 +82,7 @@ const searchUserByName = () => {
               searchUserByName();
             } else {
               console.log("Have a nice day!");
+              fs.unlinkSync("./db.txt");
             }
           });
       } else {
@@ -99,6 +100,7 @@ const searchUserByName = () => {
               searchUserByName();
             } else {
               console.log("Dopobachennya!");
+              fs.unlinkSync("./db.txt");
             }
           });
       }
