@@ -48,7 +48,6 @@ const addUser = () => {
               searchUserByName();
             } else {
               console.log("Bye...");
-              fs.unlinkSync("./db.txt");
             }
           });
       }
@@ -82,7 +81,6 @@ const searchUserByName = () => {
               searchUserByName();
             } else {
               console.log("Have a nice day!");
-              fs.unlinkSync("./db.txt");
             }
           });
       } else {
@@ -100,11 +98,20 @@ const searchUserByName = () => {
               searchUserByName();
             } else {
               console.log("Dopobachennya!");
-              fs.unlinkSync("./db.txt");
             }
           });
       }
     });
 };
 
-addUser();
+//  Reading the database file.
+fs.readFile("db.txt", (err, data) => {
+  if (err) {
+    console.log("Error reading database file.");
+    process.exit();
+  }
+  if (data.length > 0) {
+    db = JSON.parse(data);
+  }
+  addUser();
+});
