@@ -38,3 +38,28 @@ commander
         process.exit();
       });
   });
+
+// Sending a photo to the Telegram bot.
+commander
+  .command("send-photo <path>")
+  .alias("p")
+  .description("Send a photo to the Telegram bot")
+  .option("-c, --chat-id <value>", "Chat ID of the recipient")
+  .action((path, options) => {
+    bot
+      .sendPhoto(options.chatId, path)
+      .then(() => {
+        console.log("Photo sent successfully!");
+        process.exit();
+      })
+      .catch((err) => {
+        console.error(err);
+        process.exit();
+      });
+  });
+
+commander.parse(process.argv);
+
+if (!process.argv.slice(2).length) {
+  commander.outputHelp();
+}
