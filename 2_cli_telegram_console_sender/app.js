@@ -1,6 +1,7 @@
 const TelegramBot = require("node-telegram-bot-api");
 const commander = require("commander");
-const token = "5507382020:AAH0D-SCqeZew2HSviewaxAnajbm7BuhOxA";
+// Use here the token you received in the BotFather
+const token = "USE_YOUR_TOKEN_HERE";
 const bot = new TelegramBot(token, { polling: true });
 
 // Get Chat ID
