@@ -48,7 +48,7 @@ async function getWeatherForecast(interval) {
   });
   const messages = [];
   dayToForecasts.forEach((forecasts, day) => {
-    const dayOfWeek = `👉🏽${day}:👈🏽\n`;
+    const dayOfWeek = `👉🏽${day}👈🏽`;
     console.log(dayOfWeek);
     const forecastMessages = forecasts.map((forecast) => {
       const dateTime = new Date(forecast.dt_txt);
@@ -60,7 +60,21 @@ async function getWeatherForecast(interval) {
     });
     messages.push(dayOfWeek, ...forecastMessages);
   });
-  console.log(messages.join("\n\n"));
+  return messages.join("\n\n");
 }
 
-getWeatherForecast();
+// The forecast interval selection
+bot.onText(/at intervals of (\d+) hours/, async (msg, match) => {
+  const chatId = msg.chat.id;
+  const interval = parseInt(match[1], 10);
+  try {
+    const forecast = await getWeatherForecast(interval);
+    bot.sendMessage(chatId, forecast);
+  } catch (error) {
+    console.error(error);
+    bot.sendMessage(
+      chatId,
+      "Sorry, an error occurred while getting the weather forecast."
+    );
+  }
+});
