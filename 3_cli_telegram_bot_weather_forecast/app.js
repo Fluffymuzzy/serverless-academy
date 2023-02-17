@@ -29,9 +29,38 @@ bot.onText(/\/start/, (msg) => {
   );
 });
 
+// Function that gets the weather forecast using OpenWeather API
 async function getWeatherForecast(interval) {
   const response = await axios.get(WEATHER_API);
-  console.log(response);
+  const forecasts = response.data.list.filter((item) => {
+    const hour = new Date(item.dt_txt).getHours();
+    return interval === 3 ? hour % 3 === 0 : hour % 6 === 0;
+  });
+  const dayToForecasts = new Map();
+  forecasts.forEach((forecast) => {
+    const dateTime = new Date(forecast.dt_txt);
+    const day = dateTime.toLocaleString("en-US", { weekday: "long" });
+    console.log(day);
+    if (!dayToForecasts.has(day)) {
+      dayToForecasts.set(day, []);
+    }
+    dayToForecasts.get(day).push(forecast);
+  });
+  const messages = [];
+  dayToForecasts.forEach((forecasts, day) => {
+    const dayOfWeek = `👉🏽${day}:👈🏽\n`;
+    console.log(dayOfWeek);
+    const forecastMessages = forecasts.map((forecast) => {
+      const dateTime = new Date(forecast.dt_txt);
+      const time = dateTime.toLocaleTimeString([], { timeStyle: "short" });
+      console.log(time);
+      const temp = Math.round(forecast.main.temp);
+      const description = forecast.weather[0].description;
+      return `${time}: ${temp}°C, ${description}`;
+    });
+    messages.push(dayOfWeek, ...forecastMessages);
+  });
+  console.log(messages.join("\n\n"));
 }
 
-getWeatherForecast()
+getWeatherForecast();
