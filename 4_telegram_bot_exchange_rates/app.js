@@ -6,6 +6,9 @@ const axios = require("axios");
 const TOKEN = "6201228619:AAEjpwLf4ymsP2bMXlm_ueUUFb7QJWIf08I";
 const bot = new TelegramBot(TOKEN, { polling: true });
 
+// The cache
+const cache = new NodeCache({ stdTTL: 60, checkperiod: 70 });
+
 // Function to handle the /start command
 bot.onText(/\/start/, async (msg) => {
   const chatId = msg.chat.id;
@@ -57,3 +60,39 @@ async function getMonoExchangeRate() {
     return null;
   }
 }
+
+//  Round a number to the nearest kopeck value
+function roundKopecks(number) {
+  return Math.round(number * 100) / 100;
+}
+
+// Handle the currency button clicks
+bot.onText(/USD|EUR/, async (msg, match) => {
+  const chatId = msg.chat.id;
+  const currency = match[0];
+  const cacheKey = `exchange_rate_${currency}`;
+  let exchangeRate = cache.get(cacheKey);
+  if (exchangeRate) {
+    bot.sendMessage(
+      chatId,
+      `1 ${currency} = ${roundKopecks(exchangeRate)} UAH`
+    );
+  } else {
+    const getExchangeRate =
+      currency === "USD" ? getPrivatExchangeRate : getMonoExchangeRate;
+    exchangeRate = await getExchangeRate();
+    if (exchangeRate) {
+      exchangeRate.usd = Math.round(exchangeRate.usd * 100) / 100;
+      exchangeRate.eur = Math.round(exchangeRate.eur * 100) / 100;
+      cache.set(cacheKey, exchangeRate);
+      bot.sendMessage(
+        chatId,
+        `1 ${currency} = ${roundKopecks(
+          exchangeRate[currency.toLowerCase()]
+        )} UAH`
+      );
+    } else {
+      bot.sendMessage(chatId, "Failed to get the exchange rate");
+    }
+  }
+});
