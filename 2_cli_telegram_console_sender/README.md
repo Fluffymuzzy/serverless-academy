@@ -13,7 +13,7 @@ The application provides the following commands:
 - *send-photo <path> ( p)*: Sends a photo to the Telegram bot. The path to the photo file should be passed as an argument to the command. You can also specify the chat ID of the recipient using the *-c or --chat-id* option.
 
 To run a command, use the following syntax:
->>node index.js <command> [options]
+>>node index.js *command* [options]
 
 For example, to send a message to the bot with the chat ID 12345, you can run:
 >>node index.js send-message "Hello, bot!" -c 12345
