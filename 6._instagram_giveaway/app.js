@@ -5,27 +5,29 @@ async function countUsernamesInFile(filename) {
   const fileStream = fs.createReadStream(filename);
   const rl = readline.createInterface({
     input: fileStream,
+    crlfDelay: Infinity,
   });
-  const counts = {};
+  const counts = new Map();
   for await (const line of rl) {
     const usernames = line.split(" ");
     for (const username of usernames) {
-      counts[username] = (counts[username] || 0) + 1;
+      counts.set(username, (counts.get(username) || 0) + 1);
     }
   }
   return counts;
 }
 
 async function uniqueValues() {
-  const counts = {};
+  const counts = new Map();
   for (let i = 0; i <= 19; i++) {
     const filename = `words/out${i}.txt`;
     const fileCounts = await countUsernamesInFile(filename);
-    for (const [username, count] of Object.entries(fileCounts)) {
-      counts[username] = (counts[username] || 0) + 1;
+    for (const [username, count] of fileCounts) {
+      const totalCount = counts.get(username) || 0;
+      counts.set(username, totalCount + 1);
     }
   }
-  const uniqueCount = Object.keys(counts).length;
+  const uniqueCount = counts.size;
   console.log(
     `Found ${uniqueCount} unique usernames in 2 million word combinations.`
   );
@@ -38,32 +40,30 @@ async function existInAllFiles() {
     const filename = `words/out${i}.txt`;
     const fileCounts = await countUsernamesInFile(filename);
     if (!allCounts) {
-      allCounts = fileCounts;
+      allCounts = new Set(fileCounts.keys());
     } else {
-      for (const [username, count] of Object.entries(allCounts)) {
-        if (!fileCounts[username]) {
-          delete allCounts[username];
-        }
-      }
+      const newCounts = new Set(fileCounts.keys());
+      allCounts = new Set(
+        [...allCounts].filter((username) => newCounts.has(username))
+      );
     }
   }
-  const allCount = Object.keys(allCounts).length;
+  const allCount = allCounts.size;
   console.log(`Found ${allCount} usernames that exist in all 20 files.`);
   return allCount;
 }
 
 async function existInAtleastTen() {
-  const counts = {};
+  const counts = new Map();
   for (let i = 0; i <= 19; i++) {
     const filename = `words/out${i}.txt`;
     const fileCounts = await countUsernamesInFile(filename);
-    for (const [username, count] of Object.entries(fileCounts)) {
-      counts[username] = (counts[username] || 0) + 1;
+    for (const [username, count] of fileCounts) {
+      counts.set(username, (counts.get(username) || 0) + 1);
     }
   }
-  const atleastTenCount = Object.keys(counts).filter(
-    (username) => counts[username] >= 10
-  ).length;
+  const atleastTenCount = [...counts.values()].filter((count) => count >= 10)
+    .length;
   console.log(
     `Found ${atleastTenCount} usernames that exist in at least 10 files.`
   );
