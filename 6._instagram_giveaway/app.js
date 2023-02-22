@@ -16,9 +16,9 @@ async function countUsernamesInFile(filename) {
   return counts;
 }
 
-async function uniqueUsernames() {
+async function uniqueValues() {
   const counts = {};
-  for (let i = 1; i <= 19; i++) {
+  for (let i = 0; i <= 19; i++) {
     const filename = `words/out${i}.txt`;
     const fileCounts = await countUsernamesInFile(filename);
     for (const [username, count] of Object.entries(fileCounts)) {
@@ -32,8 +32,29 @@ async function uniqueUsernames() {
   return uniqueCount;
 }
 
+async function existInAllFiles() {
+  let allCounts = null;
+  for (let i = 0; i <= 19; i++) {
+    const filename = `words/out${i}.txt`;
+    const fileCounts = await countUsernamesInFile(filename);
+    if (!allCounts) {
+      allCounts = fileCounts;
+    } else {
+      for (const [username, count] of Object.entries(allCounts)) {
+        if (!fileCounts[username]) {
+          delete allCounts[username];
+        }
+      }
+    }
+  }
+  const allCount = Object.keys(allCounts).length;
+  console.log(`Found ${allCount} usernames that exist in all 20 files.`);
+  return allCount;
+}
+
 async function main() {
-  const uniqueCount = await uniqueUsernames();
+  const uniqueCount = await uniqueValues();
+  const allCount = await existInAllFiles();
 }
 
 main();
