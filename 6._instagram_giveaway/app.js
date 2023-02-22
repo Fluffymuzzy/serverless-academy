@@ -1,7 +1,6 @@
 const fs = require("fs");
 const readline = require("readline");
 
-
 async function countUsernamesInFile(filename) {
   const fileStream = fs.createReadStream(filename);
   const rl = readline.createInterface({
@@ -17,18 +16,24 @@ async function countUsernamesInFile(filename) {
   return counts;
 }
 
-
-async function uniqueValue() {
-  console.time("uniqueValues");
-  for (let i = 1; i <= 20; i++) {
+async function uniqueUsernames() {
+  const counts = {};
+  for (let i = 1; i <= 19; i++) {
     const filename = `words/out${i}.txt`;
     const fileCounts = await countUsernamesInFile(filename);
-    console.log(fileCounts);
+    for (const [username, count] of Object.entries(fileCounts)) {
+      counts[username] = (counts[username] || 0) + 1;
+    }
   }
+  const uniqueCount = Object.keys(counts).length;
+  console.log(
+    `Found ${uniqueCount} unique usernames in 2 million word combinations.`
+  );
+  return uniqueCount;
 }
 
 async function main() {
-  const uniqueCount = await uniqueValue();
+  const uniqueCount = await uniqueUsernames();
 }
 
 main();
