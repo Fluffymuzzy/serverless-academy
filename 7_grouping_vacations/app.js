@@ -34,7 +34,7 @@ vacationsData.forEach((vacation) => {
   }
 });
 
-// Write the transformed data to a new JSON file
+// Write the sorted data to a new JSON file
 fs.writeFileSync("sortedData.json", JSON.stringify(sortedData, null, 2));
 
-console.log("Data has been transformed successfully!");
+console.log("Data has been sorted successfully!");
