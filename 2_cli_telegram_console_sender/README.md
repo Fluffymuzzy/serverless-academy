@@ -4,7 +4,7 @@ This is a simple command-line application that allows you to interact with a Tel
 1. Clone the repository to your local machine.
 2. Install the dependencies by running *npm install* in the project directory.
 3. Obtain a token for your Telegram bot from the BotFather and replace the placeholder *USE_YOUR_TOKEN_HERE* in the app.js file with your actual token.
-4. Run the application using *node app.js*
+4. Run the application using *npm start*.
 
 ## Usage
 The application provides the following commands:

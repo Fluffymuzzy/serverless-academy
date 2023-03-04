@@ -1,26 +1,9 @@
-const fs = require("fs");
-const readline = require("readline");
-
-async function countUsernamesInFile(filename) {
-  const fileStream = fs.createReadStream(filename);
-  const rl = readline.createInterface({
-    input: fileStream,
-    crlfDelay: Infinity,
-  });
-  const counts = new Map();
-  for await (const line of rl) {
-    const usernames = line.split(" ");
-    for (const username of usernames) {
-      counts.set(username, (counts.get(username) || 0) + 1);
-    }
-  }
-  return counts;
-}
+import { countUsernamesInFile } from "./src/utils/countUsernames.js";
 
 async function uniqueValues() {
   const counts = new Map();
   for (let i = 0; i <= 19; i++) {
-    const filename = `words/out${i}.txt`;
+    const filename = `src/data/out${i}.txt`;
     const fileCounts = await countUsernamesInFile(filename);
     for (const [username, count] of fileCounts) {
       const totalCount = counts.get(username) || 0;
@@ -37,7 +20,7 @@ async function uniqueValues() {
 async function existInAllFiles() {
   let allCounts = null;
   for (let i = 0; i <= 19; i++) {
-    const filename = `words/out${i}.txt`;
+    const filename = `src/data/out${i}.txt`;
     const fileCounts = await countUsernamesInFile(filename);
     if (!allCounts) {
       allCounts = new Set(fileCounts.keys());
@@ -56,7 +39,7 @@ async function existInAllFiles() {
 async function existInAtleastTen() {
   const counts = new Map();
   for (let i = 0; i <= 19; i++) {
-    const filename = `words/out${i}.txt`;
+    const filename = `src/data/out${i}.txt`;
     const fileCounts = await countUsernamesInFile(filename);
     for (const [username, count] of fileCounts) {
       counts.set(username, (counts.get(username) || 0) + 1);

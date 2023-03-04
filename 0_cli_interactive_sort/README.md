@@ -10,7 +10,7 @@ This is a Node.js console application that allows the user to enter a list of wo
 ### To use the app, follow these steps:
 
 1. Open a terminal or command prompt and navigate to the project directory
-2. Run **node app.js** to start the app
+2. Run **npm start** to start the app
 3. Enter a few words or numbers separated by a space
 4. The app will ask you how you want to sort the input or display unique values
 5. Choose an option by typing the corresponding number and pressing Enter

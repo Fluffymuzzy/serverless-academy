@@ -10,7 +10,7 @@ To use this application, you will need to have Node.js and npm installed on your
 >>npm install
 
 Start the application by running the following command:
->>node app.js
+>>npm start
 
 Follow the prompts to add new users to the database or search for existing users.
 
@@ -32,4 +32,4 @@ To search for a user in the database, follow these steps:
 
 If the user is not found in the database, you will be prompted to search again or exit the application.
 ## Database
-The user data is stored in a JSON file named db.txt. If the file does not exist when the application is started, a new file will be created. If the file already exists, the data from the file will be loaded into the application's memory.
+The user data is stored in a file named db.txt.

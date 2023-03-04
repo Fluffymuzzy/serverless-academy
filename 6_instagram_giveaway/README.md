@@ -13,5 +13,5 @@ Before running this program, you should have the following:
 ## How to run
 1. Open a terminal in the directory where the program is located.
 2. Run the following command:
->> node app.js
+>> npm start
 3. The program will output the total number of unique usernames found, the number of usernames that exist in all files, and the number of usernames that exist in at least 10 files.

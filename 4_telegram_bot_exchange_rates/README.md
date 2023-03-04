@@ -12,7 +12,7 @@ To install the required packages, run the following command in the project direc
 >> npm install
 
 To start the bot, run the following command:
->> node app.js
+>> npm start
 
 ## Usage
 

@@ -5,5 +5,6 @@ const CITY = `&q=Kyiv`;
 const API = `https://api.openweathermap.org/data/2.5/forecast?appid=`;
 
 export const WEATHER_API = API + WEATHER_API_KEY + CITY + UNITS;
-// Token from BotFather Lol :)
+// Token from BotFather :)
 export const TOKEN = "USE_YOUR_TOKEN_HERE";
+

@@ -1,42 +1,21 @@
-const rl = require("readline").createInterface({
+const { createInterface } = require("readline");
+const {
+  sortWords,
+  sortNumbersAsc,
+  sortNumbersDesc,
+  sortWordsByLength,
+  getUniqueWords,
+  getUniqueValues,
+} = require("./src/sort.js");
+const { isValidInput } = require("./src/validation.js");
+
+const rl = createInterface({
   input: process.stdin,
   output: process.stdout,
 });
 
-// Sort words alphabetically
-const sortWords = (arr) => {
-  return arr.sort((a, b) => a.localeCompare(b));
-};
-
-// Show numbers from lesser to greater
-const sortNumbersAsc = (arr) => {
-  return arr.sort((a, b) => a - b);
-};
-
-// Show numbers from bigger to smaller
-const sortNumbersDesc = (arr) => {
-  return arr.sort((a, b) => b - a);
-};
-
-// Display words in ascending order by number of letters in the word
-const sortWordsByLength = (arr) => {
-  return arr.sort((a, b) => a.length - b.length);
-};
-
-// Show only unique words
-const getUniqueWords = (arr) => {
-  return [...new Set(arr)];
-};
-
-// Display only unique values from the set of words and numbers entered by the user
-const getUniqueValues = (arr) => {
-  return [...new Set(arr.map((x) => (isNaN(x) ? x : +x)))];
-};
-
-// our response
 let inputArray = [];
 
-//  It asks the user how they want to sort the input, and then performs the sort based on the user's input.
 const sort = (input) => {
   rl.question(
     "How would you like to sort the input?\n" +
@@ -79,14 +58,6 @@ const sort = (input) => {
     }
   );
 };
-
-// validation of incoming data
-const isValidInput = (inputArr) => {
-  return inputArr.length >= 2 && inputArr.length <= 10;
-};
-
-// ask the user for input, checks if the input is valid, and if it is, sorts the
-// values. If the input is not valid, it asks the user if they want to try again.
 
 const letsStartAgain = () =>
   rl.question(
